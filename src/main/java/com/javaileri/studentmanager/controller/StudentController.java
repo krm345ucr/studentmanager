@@ -16,11 +16,7 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    // ✅ Basit test endpoint’i: Railway bunu kontrol eder
-    @GetMapping("/health")
-    public String healthCheck() {
-        return "Student API is up and running!";
-    }
+
 
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
