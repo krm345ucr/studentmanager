@@ -97,4 +97,10 @@ public class StudentController {
         printGenericList(students);
         return "Tüm öğrenciler konsola yazdırıldı.";
     }
+    // ✅ Health check endpoint'i (Railway için gerekli olabilir)
+    @GetMapping("/health")
+    public String healthCheck() {
+        return "Uygulama çalışıyor 🚀";
+    }
+
 }
