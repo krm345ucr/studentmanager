@@ -1,20 +1,12 @@
-# Temel JDK imajı
-FROM eclipse-temurin:17-jdk
-
-# Uygulama dizinine geç
+# 1. Aşama: Maven ile derleme
+FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
-
-# Tüm proje dosyalarını kopyala
 COPY . .
+RUN mvn clean package -DskipTests
 
-# Maven script'ine çalıştırma izni ver
-RUN chmod +x ./mvnw
-
-# Testleri tamamen atlayarak derleme yap
-RUN ./mvnw clean package -Dmaven.test.skip=true
-
-# Uygulama portunu aç
+# 2. Aşama: Sadece çalıştırma için JDK
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=build /app/target/studentmanager-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# Uygulama jar dosyasını çalıştır
-CMD ["java", "-jar", "target/studentmanager-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
