@@ -1,21 +1,20 @@
-# Java 17 JDK image
+# Temel JDK imajı
 FROM eclipse-temurin:17-jdk
 
-# Çalışma dizini
-# Java 17 JDK image
-FROM eclipse-temurin:17-jdk
-
-# Çalışma dizini
+# Uygulama dizinine geç
 WORKDIR /app
 
-# Tüm dosyaları kopyala
+# Tüm proje dosyalarını kopyala
 COPY . .
 
-# Linux için gerekli izinleri ver (sadece Linux image içinde çalışır)
-RUN ["chmod", "+x", "./mvnw"]
+# Maven script'ine çalıştırma izni ver
+RUN chmod +x ./mvnw
 
-# Maven ile build işlemi
-RUN ./mvnw clean package -DskipTests
+# Testleri tamamen atlayarak derleme yap
+RUN ./mvnw clean package -Dmaven.test.skip=true
 
-# JAR dosyasını çalıştır
+# Uygulama portunu aç
+EXPOSE 8080
+
+# Uygulama jar dosyasını çalıştır
 CMD ["java", "-jar", "target/studentmanager-0.0.1-SNAPSHOT.jar"]

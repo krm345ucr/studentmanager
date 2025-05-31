@@ -37,12 +37,13 @@ public class StudentController {
     }
 
     // Belirli yaştan büyükleri getirme
-    @GetMapping("/filterByAge")
+    @GetMapping("/filter-by-age")  // tireli
     public List<Student> getStudentsAboveAge(@RequestParam int minAge) {
         return studentRepository.findAll().stream()
                 .filter(student -> student.getAge() >= minAge)
                 .collect(Collectors.toList());
     }
+
 
     // Öğrenci güncelleme
     @PutMapping("/{id}")
@@ -104,4 +105,5 @@ public class StudentController {
         return "Uygulama çalışıyor 🚀";
     }
 }
+
 
