@@ -1,12 +1,20 @@
-# 1. Aşama: Maven ile derleme
-FROM maven:3.9.4-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
-
-# 2. Aşama: Sadece çalıştırma için JDK
+# Java 17 imajı
 FROM eclipse-temurin:17-jdk
+
+# Çalışma dizinine geç
 WORKDIR /app
-COPY --from=build /app/target/studentmanager-0.0.1-SNAPSHOT.jar app.jar
+
+# Tüm dosyaları kopyala
+COPY . .
+
+# Maven Wrapper’a izin ver
+RUN chmod +x mvnw
+
+# Derleme (testler atlanır)
+RUN ./mvnw clean package -DskipTests
+
+# 8080 portunu expose et
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+
+# .jar dosyasını çalıştır
+CMD ["java", "-jar", "target/studentmanager-0.0.1-SNAPSHOT.jar"]
